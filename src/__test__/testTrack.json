@@ -1,0 +1,67 @@
+{
+  "Name": "test track",
+  "Sections": [
+    {
+      "id": 1,
+      "Rails": [
+        {
+          "X": 10,
+          "Y": 20,
+          "Direction": 2,
+          "Entrance": true
+        },
+        {
+          "X": 11,
+          "Y": 20,
+          "Direction": 2
+        },
+        {
+          "X": 12,
+          "Y": 20,
+          "Direction": 2
+        },
+        {
+          "X": 13,
+          "Y": 20,
+          "Direction": 2
+        },
+        {
+          "X": 14,
+          "Y": 20,
+          "Direction": 2
+        },
+        {
+          "X": 15,
+          "Y": 20,
+          "Direction": 2
+        },
+        {
+          "X": 16,
+          "Y": 20,
+          "Direction": 2
+        },
+        {
+          "X": 17,
+          "Y": 20,
+          "Direction": 2
+        },
+        {
+          "X": 18,
+          "Y": 20,
+          "Direction": 2
+        },
+        {
+          "X": 19,
+          "Y": 20,
+          "Direction": 2
+        },
+        {
+          "X": 20,
+          "Y": 20,
+          "Direction": 2,
+          "Exit": true
+        }
+      ]
+    }
+  ]
+}

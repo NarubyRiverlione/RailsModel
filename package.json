@@ -1,0 +1,108 @@
+{
+  "name": "railsmodel",
+  "version": "0.1.0",
+  "description": "Model for Rails Simulator",
+  "main": "lib/Model/Tracks.js",
+  "types": "lib/Model/Tracks.d.ts",
+  "type": "module",
+  "keywords": [],
+  "author": "Naruby Riverlione",
+  "repository": {
+    "url": "https://github.com/NarubyRiverlione/RailsModel"
+  },
+  "license": "ISC",
+  "scripts": {
+    "prepare": "tsc",
+    "dev": "tsc -w",
+    "build": "tsc -p .",
+    "lint": "eslint ./src --fix",
+    "test:coverage": "npm test -- --coverage",
+    "test:badges": "npm run test:coverage  && istanbul-badges-readme",
+    "test": "jest  --detectOpenHandles"
+  },
+  "devDependencies": {
+    "@types/jest": "^26.0.23",
+    "@types/node": "^16.3.2",
+    "@typescript-eslint/eslint-plugin": "^4.22.0",
+    "eslint": "^7.25.0",
+    "eslint-config-airbnb-typescript": "^12.3.1",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jest": "^24.3.6",
+    "istanbul-badges-readme": "^1.2.1",
+    "jest": "^27.0.6",
+    "ts-jest": "^27.0.3",
+    "typescript": "^4.2.4"
+  },
+  "jest": {
+    "coverageReporters": [
+      "json-summary",
+      "text",
+      "lcov"
+    ],
+    "testEnvironment": "node",
+    "roots": [
+      "<rootDir>/src"
+    ],
+    "testMatch": [
+      "**/?(*.)+(spec|test).+(ts|tsx|js)"
+    ],
+    "transform": {
+      "^.+\\.(ts|tsx)$": "ts-jest"
+    }
+  },
+  "eslintConfig": {
+    "extends": [
+      "airbnb-typescript/base"
+    ],
+    "plugins": [
+      "jest"
+    ],
+    "env": {
+      "node": true,
+      "es6": true,
+      "jest/globals": true
+    },
+    "parserOptions": {
+      "project": "./tsconfig.json"
+    },
+    "ignorePatterns": "/lib/",
+    "rules": {
+      "@typescript-eslint/lines-between-class-members": "off",
+      "no-mixed-operators": "off",
+      "class-methods-use-this": "warn",
+      "max-len": [
+        "warn",
+        {
+          "code": 120,
+          "comments": 150
+        }
+      ],
+      "indent": "off",
+      "@typescript-eslint/indent": [
+        "warn",
+        2
+      ],
+      "linebreak-style": [
+        0
+      ],
+      "quotes": [
+        "error",
+        "single"
+      ],
+      "@typescript-eslint/semi": [
+        "error",
+        "never"
+      ],
+      "no-mixed-spaces-and-tabs": [
+        "warn",
+        "smart-tabs"
+      ],
+      "no-console": [
+        "off"
+      ]
+    }
+  },
+  "dependencies": {
+    "mobx": "^6.3.2"
+  }
+}
