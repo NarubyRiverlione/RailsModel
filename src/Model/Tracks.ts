@@ -15,12 +15,16 @@ export default class Tracks implements Track {
     this.Sections = []
   }
 
+  ParseJson(trackFile: string) {
+    const trackObj = JSON.parse(trackFile.toString())
+    this.Name = trackObj.Name
+    this.Sections = trackObj.Sections
+  }
+
   async Read(FileName: string) {
     try {
       const trackFile = await fsPromises.readFile(FileName)
-      const trackObj = JSON.parse(trackFile.toString())
-      this.Name = trackObj.Name
-      this.Sections = trackObj.Sections
+      this.ParseJson(trackFile.toString())
     } catch (error) {
       console.error(error.message)
     }

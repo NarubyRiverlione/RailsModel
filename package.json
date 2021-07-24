@@ -1,6 +1,6 @@
 {
   "name": "railsmodel",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "Model for Rails Simulator",
   "main": "lib/Model/Tracks.js",
   "types": "lib/Model/Tracks.d.ts",

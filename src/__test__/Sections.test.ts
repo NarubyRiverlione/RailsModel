@@ -11,7 +11,7 @@ describe('Add rails', () => {
       const empty = new Sections(123)
       expect(empty.Rails.length).toBe(0)
       expect(empty.Id).toBe(123)
-      expect(empty.Status).toBe(SectionStatus.Red)
+      expect(empty.Status).toBe(SectionStatus.Unknown)
     })
     it('Cannot add rail to not-connected section without an entrance', () => {
       const emptySection = new Sections(123)

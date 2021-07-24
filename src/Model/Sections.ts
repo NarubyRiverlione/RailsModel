@@ -34,7 +34,7 @@ export default class Sections implements Section {
     this.Rails = []
     this.FromSection = 0
     this.ToSection = 0
-    this.Status = SectionStatus.Red
+    this.Status = SectionStatus.Unknown
     makeAutoObservable(this)
   }
 
