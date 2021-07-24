@@ -11,6 +11,7 @@ export enum SectionStatus {
   Green,
   Orange,
   Red,
+  Unknown,
 }
 
 export type Section = {
