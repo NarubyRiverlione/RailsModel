@@ -2,42 +2,50 @@
 import Train from '../Model/Train'
 import SectionsMock from './mocks/SectionsMock'
 import RailsMock from './mocks/RailsMock'
-import { CstTrain } from '../Cst'
+import { CstTrain, CstError } from '../Cst'
 
+const { TrainError } = CstError
 const FieldsInTestSection = 25
 const StartSectionX = 10
 const testSection = new SectionsMock(10)
-for (let x = StartSectionX; x <= StartSectionX + FieldsInTestSection; x += 1) {
-  testSection.Rails.push(new RailsMock(x, 20))
+for (let fieldNr = 0; fieldNr < FieldsInTestSection; fieldNr += 1) {
+  testSection.Rails.push(new RailsMock(StartSectionX + fieldNr, 20))
 }
 
 describe('Setup new train', () => {
-  it('Stopped train and start of section', () => {
+  it('Make Stopped train and put it on a section', () => {
     const name = 'Test Train'
     const id = 1
     const maxSpeed = 120
     const fieldNr = 1
-    const train = new Train(name, id, testSection, fieldNr, maxSpeed)
+    const train = new Train(name, id, maxSpeed)
     expect(train.Running).toBeFalsy()
     expect(train.Braking).toBeFalsy()
     expect(train.TraveledDistance).toBe(0)
     expect(train.Id).toBe(id)
     expect(train.MaxSpeed).toBe(maxSpeed)
     expect(train.CurrentSpeed).toBe(0)
+    expect(train.OnSection).toBe(undefined)
+    expect(train.OnFieldNr).toBe(-1)
+
+    train.SetOnSection(testSection, fieldNr)
     expect(train.OnSection).toMatchObject(testSection)
     expect(testSection.Rails[fieldNr].TrainID).toBe(id)
-    expect(train.FieldNr).toBe(fieldNr)
+    expect(train.OnFieldNr).toBe(fieldNr)
   })
-  it('Stopped train and specific part in the section', () => {
+  it('Try set a train outside the section', () => {
     const name = 'Test Train'
     const id = 1
     const maxSpeed = 120
-    const fieldNR = 20
-    const train = new Train(name, id, testSection, fieldNR, maxSpeed)
-    expect(train.Id).toBe(id)
-    expect(train.OnSection).toMatchObject(testSection)
-    expect(train.FieldNr).toBe(fieldNR)
-    expect(testSection.Rails[fieldNR].TrainID).toBe(id)
+    const testTrain = new Train(name, id, maxSpeed)
+    try {
+      testTrain.SetOnSection(testSection, FieldsInTestSection + 1)
+      testTrain.Running = true
+    } catch (err) {
+      expect(testTrain.OnSection).toBe(undefined)
+      expect(testTrain.OnFieldNr).toBe(-1)
+      expect(err.message).toBe(`${TrainError.InvalidFieldInSection} ${testTrain.OnFieldNr}/${testSection.Rails.length}`)
+    }
   })
 })
 
@@ -48,7 +56,8 @@ describe('Train movements', () => {
     const maxSpeed = 120
     const currentSpeed = 0
     const StartFieldNR = 20
-    const train = new Train(name, id, testSection, StartFieldNR, maxSpeed, currentSpeed)
+    const train = new Train(name, id, maxSpeed, currentSpeed)
+    train.SetOnSection(testSection, StartFieldNR)
     expect(testSection.Rails[StartFieldNR].TrainID).toBe(id)
     train.Thick()
     expect(testSection.Rails[StartFieldNR].TrainID).toBe(id)
@@ -60,7 +69,8 @@ describe('Train movements', () => {
     const maxSpeed = 120
     const currentSpeed = 120
     const StartFieldNR = 20
-    const train = new Train(name, id, testSection, StartFieldNR, maxSpeed, currentSpeed)
+    const train = new Train(name, id, maxSpeed, currentSpeed)
+    train.SetOnSection(testSection, StartFieldNR)
     train.Running = true
     train.Thick()
     expect(train.TraveledDistance).toBe(maxSpeed)
@@ -84,19 +94,37 @@ describe('Train movements', () => {
     expect(train.TraveledDistance).toBe(maxSpeed)
     expect(testSection.Rails[StartFieldNR].TrainID).toBe(0)
     expect(testSection.Rails[StartFieldNR + 1].TrainID).toBe(id)
+    train.Thick()
+    train.Thick()
+    train.Thick()
+    train.Thick()
+    expect(train.TraveledDistance).toBe(0)
+    expect(testSection.Rails[StartFieldNR + 2].TrainID).toBe(id)
+    expect(testSection.Rails[StartFieldNR + 1].TrainID).toBe(0)
   })
   it('No next field in section = stay at current', () => {
     const name = 'Test Train'
     const id = 1
     const maxSpeed = 120
     const currentSpeed = 60
-    const StartFieldNR = FieldsInTestSection
-    const train = new Train(name, id, testSection, StartFieldNR, maxSpeed, currentSpeed)
-    expect(testSection.Rails[StartFieldNR].TrainID).toBe(id)
-    expect(train.FieldNr).toBe(StartFieldNR)
+    const lastField = FieldsInTestSection - 1 // count start at zero
+    const train = new Train(name, id, maxSpeed, currentSpeed)
+    expect(testSection.Rails.length).toBe(FieldsInTestSection)
+    train.SetOnSection(testSection, lastField)
+    expect(testSection.Rails[lastField].TrainID).toBe(id)
+    expect(train.OnFieldNr).toBe(lastField)
     train.Thick()
-    expect(testSection.Rails[StartFieldNR].TrainID).toBe(id)
+    expect(testSection.Rails[lastField].TrainID).toBe(id)
     expect(train.CurrentSpeed).toBe(0)
+  })
+  it('try moving try without be on a section', () => {
+    const name = 'Test Train'
+    const id = 1
+    const maxSpeed = 120
+    const currentSpeed = 0
+    const train = new Train(name, id, maxSpeed, currentSpeed)
+    train.Thick()
+    expect(train.OnFieldNr).toBe(-1)
   })
 })
 
@@ -107,7 +135,8 @@ describe('Speeding, braking', () => {
     const maxSpeed = 120
     const startSpeed = 0
     const StartFieldNR = 1
-    const train = new Train(name, id, testSection, StartFieldNR, maxSpeed, startSpeed)
+    const train = new Train(name, id, maxSpeed, startSpeed)
+    train.SetOnSection(testSection, StartFieldNR)
     expect(testSection.Rails[StartFieldNR].TrainID).toBe(id)
     const { SpeedingUp } = CstTrain
     train.Running = true
@@ -132,7 +161,8 @@ describe('Speeding, braking', () => {
     const maxSpeed = 120
     const startSpeed = 90
     const StartFieldNR = 1
-    const train = new Train(name, id, testSection, StartFieldNR, maxSpeed, startSpeed)
+    const train = new Train(name, id, maxSpeed, startSpeed)
+    train.SetOnSection(testSection, StartFieldNR)
     expect(testSection.Rails[StartFieldNR].TrainID).toBe(id)
     const { Braking } = CstTrain
     train.Braking = true

@@ -8,35 +8,41 @@ export default class Train {
   Id: number
   MaxSpeed: number
   CurrentSpeed: number
-  OnSection: Section
-  FieldNr: number
+  OnSection?: Section
+  OnFieldNr: number
   Running: boolean
   Braking: boolean
   TraveledDistance: number
 
-  constructor(name: string, id: number, onSection: Section, fieldNr: number, maxSpeed: number, currentSpeed = 0) {
+  constructor(name: string, id: number, maxSpeed: number, currentSpeed = 0) {
     this.Name = name
     this.Id = id
-    this.OnSection = onSection
-    this.FieldNr = fieldNr
     this.MaxSpeed = maxSpeed
     this.CurrentSpeed = currentSpeed
     this.Running = false
     this.Braking = false
     this.TraveledDistance = 0
-
-    // set train on section
-    if (fieldNr > this.OnSection.Rails.length) {
-      throw new Error(`${TrainError.InvalidFieldInSection + fieldNr}/${this.OnSection.Rails.length}`)
-    }
-    this.OnSection.Rails[fieldNr].TrainID = id
+    // constructor must alway works, set train later on section/field to do  checks
+    this.OnFieldNr = -1
 
     makeAutoObservable(this)
   }
 
+  SetOnSection(onSection: Section, startFieldNr: number) {
+    // must be on a valid field in the section
+    if (startFieldNr > onSection.Rails.length) {
+      throw new Error(`${TrainError.InvalidFieldInSection} ${this.OnFieldNr}/${onSection.Rails.length}`)
+    }
+
+    this.OnSection = onSection
+    this.OnFieldNr = startFieldNr
+    this.OnSection.Rails[startFieldNr].TrainID = this.Id
+  }
+
   Thick() {
+    if (!this.OnSection) return
     // no next field = stop train
-    if (this.FieldNr === this.OnSection.Rails.length - 1) {
+    if (this.OnFieldNr === this.OnSection.Rails.length - 1) {
       this.CurrentSpeed = 0
     }
     // braking = slowing down until stop
@@ -54,14 +60,14 @@ export default class Train {
       this.TraveledDistance += this.CurrentSpeed
       if (this.TraveledDistance >= CstField.Length) {
         // check if there is a next field in the section
-        if (this.FieldNr < this.OnSection.Rails.length) {
+        if (this.OnFieldNr < this.OnSection.Rails.length) {
           // move to next field, reset traveled distance
           this.TraveledDistance = 0
           // clear current field
-          this.OnSection.Rails[this.FieldNr].TrainID = 0
+          this.OnSection.Rails[this.OnFieldNr].TrainID = 0
           // occupy next field
-          this.FieldNr += 1
-          this.OnSection.Rails[this.FieldNr].TrainID = this.Id
+          this.OnFieldNr += 1
+          this.OnSection.Rails[this.OnFieldNr].TrainID = this.Id
         }
       }
     }
