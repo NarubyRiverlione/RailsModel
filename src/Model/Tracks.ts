@@ -29,9 +29,9 @@ export default class Tracks implements Track {
       // add section
       this.Sections.push(new Sections(section.Id))
 
-      section.Rails.forEach((rail) => {
+      section.rails.forEach((rail) => {
         // add rail to section
-        this.Sections[index].Rails.push(rail)
+        this.Sections[index].AddRail(rail)
       })
     })
   }
