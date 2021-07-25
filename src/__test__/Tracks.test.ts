@@ -21,12 +21,12 @@ describe('Make track with sections', () => {
   it('Two section', () => {
     const saveTrack = new Tracks()
     const { section1, section2 } = makeTestTrack()
-    saveTrack.Sections.push(section1)
-    saveTrack.Sections.push(section2)
+    saveTrack.AddSection(section1)
+    saveTrack.AddSection(section2)
 
     expect(saveTrack.SectionAmount).toBe(2)
-    expect(saveTrack.Sections[0].RailAmount).toBe(3)
-    expect(saveTrack.Sections[1].RailAmount).toBe(4)
+    expect(saveTrack.sections[0].CountRails).toBe(3)
+    expect(saveTrack.sections[1].CountRails).toBe(4)
   })
 })
 
@@ -37,11 +37,13 @@ describe('Read & Save', () => {
     expect(testTrack.Name).toBe('test track')
 
     expect(testTrack.SectionAmount).toBe(1)
-    const firstSection = testTrack.Sections[0]
+    const firstSection = testTrack.sections[0]
 
-    expect(firstSection.RailAmount).toBe(18)
-    expect(firstSection.rails[0].Entrance).toBeTruthy()
-    expect(firstSection.rails[17].Exit).toBeTruthy()
+    expect(firstSection.CountRails).toBe(18)
+    expect(firstSection.GetRail(0).Entrance).toBeTruthy()
+    expect(firstSection.GetRail(0).Direction).toBe(Direction.Horizontal)
+    expect(firstSection.GetRail(10).Direction).toBe(11)
+    expect(firstSection.GetRail(17).Exit).toBeTruthy()
   })
 
   it('Save track & read it again to verify', async () => {
@@ -50,8 +52,8 @@ describe('Read & Save', () => {
     const saveTrack = new Tracks()
     saveTrack.Name = trackName
     const { section1, section2 } = makeTestTrack()
-    saveTrack.Sections.push(section1)
-    saveTrack.Sections.push(section2)
+    saveTrack.AddSection(section1)
+    saveTrack.AddSection(section2)
 
     await saveTrack.Save('.//src/__test__/testSave.json')
 
@@ -59,8 +61,8 @@ describe('Read & Save', () => {
     await testTrack.Read('./src/__test__/testSave.json')
     expect(testTrack.Name).toBe(trackName)
     expect(testTrack.SectionAmount).toBe(2)
-    expect(testTrack.Sections[0].RailAmount).toBe(3)
-    expect(testTrack.Sections[1].RailAmount).toBe(4)
+    expect(testTrack.sections[0].CountRails).toBe(3)
+    expect(testTrack.sections[1].CountRails).toBe(4)
   })
 })
 
@@ -68,8 +70,9 @@ describe('Trains', () => {
   it('At a train to a track', () => {
     const testTrack = new Tracks()
     const { section1, section2 } = makeTestTrack()
-    testTrack.Sections.push(section1)
-    testTrack.Sections.push(section2)
+    testTrack.AddSection(section1)
+    testTrack.AddSection(section2)
+
     const train1 = new Train('test train', 1, 100, 100)
     train1.SetOnSection(section1, 0)
     testTrack.Trains.push(train1)
@@ -78,8 +81,9 @@ describe('Trains', () => {
   it('Let a train run', () => {
     const testTrack = new Tracks()
     const { section1, section2 } = makeTestTrack()
-    testTrack.Sections.push(section1)
-    testTrack.Sections.push(section2)
+    testTrack.AddSection(section1)
+    testTrack.AddSection(section2)
+
     const currentSpeed = 100
     const startField = 0
     const train1 = new Train('test train', 1, 100, currentSpeed)

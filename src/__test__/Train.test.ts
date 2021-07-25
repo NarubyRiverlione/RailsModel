@@ -30,7 +30,7 @@ describe('Setup new train', () => {
 
     train.SetOnSection(testSection, fieldNr)
     expect(train.OnSection).toMatchObject(testSection)
-    expect(testSection.rails[fieldNr].TrainID).toBe(id)
+    expect(testSection.GetRail(fieldNr).TrainID).toBe(id)
     expect(train.OnFieldNr).toBe(fieldNr)
   })
   it('Try set a train outside the section', () => {
@@ -44,7 +44,7 @@ describe('Setup new train', () => {
     } catch (err) {
       expect(testTrain.OnSection).toBe(undefined)
       expect(testTrain.OnFieldNr).toBe(-1)
-      expect(err.message).toBe(`${TrainError.InvalidFieldInSection} ${testTrain.OnFieldNr}/${testSection.rails.length}`)
+      expect(err.message).toBe(`${TrainError.InvalidFieldInSection} ${testTrain.OnFieldNr}/${testSection.CountRails}`)
     }
   })
 })
@@ -58,9 +58,9 @@ describe('Train movements', () => {
     const StartFieldNR = 20
     const train = new Train(name, id, maxSpeed, currentSpeed)
     train.SetOnSection(testSection, StartFieldNR)
-    expect(testSection.rails[StartFieldNR].TrainID).toBe(id)
+    expect(testSection.GetRail(StartFieldNR).TrainID).toBe(id)
     train.Thick()
-    expect(testSection.rails[StartFieldNR].TrainID).toBe(id)
+    expect(testSection.GetRail(StartFieldNR).TrainID).toBe(id)
     expect(train.Running).toBeFalsy()
   })
   it('Running at max speed = move to next field when traveled distance = field length, then reset traveled distance', () => {
@@ -74,33 +74,33 @@ describe('Train movements', () => {
     train.Running = true
     train.Thick()
     expect(train.TraveledDistance).toBe(maxSpeed)
-    expect(testSection.rails[StartFieldNR].TrainID).toBe(id)
+    expect(testSection.GetRail(StartFieldNR).TrainID).toBe(id)
     train.Thick()
     expect(train.TraveledDistance).toBe(maxSpeed * 2)
-    expect(testSection.rails[StartFieldNR].TrainID).toBe(id)
+    expect(testSection.GetRail(StartFieldNR).TrainID).toBe(id)
     train.Thick()
     expect(train.TraveledDistance).toBe(maxSpeed * 3)
-    expect(testSection.rails[StartFieldNR].TrainID).toBe(id)
+    expect(testSection.GetRail(StartFieldNR).TrainID).toBe(id)
     train.Thick()
     expect(train.TraveledDistance).toBe(maxSpeed * 4)
-    expect(testSection.rails[StartFieldNR].TrainID).toBe(id)
+    expect(testSection.GetRail(StartFieldNR).TrainID).toBe(id)
 
     train.Thick()
     expect(train.TraveledDistance).toBe(0)
-    expect(testSection.rails[StartFieldNR].TrainID).toBe(0)
-    expect(testSection.rails[StartFieldNR + 1].TrainID).toBe(id)
+    expect(testSection.GetRail(StartFieldNR).TrainID).toBe(0)
+    expect(testSection.GetRail(StartFieldNR + 1).TrainID).toBe(id)
 
     train.Thick()
     expect(train.TraveledDistance).toBe(maxSpeed)
-    expect(testSection.rails[StartFieldNR].TrainID).toBe(0)
-    expect(testSection.rails[StartFieldNR + 1].TrainID).toBe(id)
+    expect(testSection.GetRail(StartFieldNR).TrainID).toBe(0)
+    expect(testSection.GetRail(StartFieldNR + 1).TrainID).toBe(id)
     train.Thick()
     train.Thick()
     train.Thick()
     train.Thick()
     expect(train.TraveledDistance).toBe(0)
-    expect(testSection.rails[StartFieldNR + 2].TrainID).toBe(id)
-    expect(testSection.rails[StartFieldNR + 1].TrainID).toBe(0)
+    expect(testSection.GetRail(StartFieldNR + 2).TrainID).toBe(id)
+    expect(testSection.GetRail(StartFieldNR + 1).TrainID).toBe(0)
   })
   it('No next field in section = stay at current', () => {
     const name = 'Test Train'
@@ -109,16 +109,16 @@ describe('Train movements', () => {
     const currentSpeed = 250
     const lastField = FieldsInTestSection - 1 // count start at zero
     const train = new Train(name, id, maxSpeed, currentSpeed)
-    expect(testSection.rails.length).toBe(FieldsInTestSection)
+    expect(testSection.CountRails).toBe(FieldsInTestSection)
     train.SetOnSection(testSection, lastField)
     train.Running = true
-    expect(testSection.rails[lastField].TrainID).toBe(id)
+    expect(testSection.GetRail(lastField).TrainID).toBe(id)
     expect(train.OnFieldNr).toBe(lastField)
     // speed 250, length rail = 500 --> need 2 thick to try to move to next  rail
     train.Thick()
     train.Thick()
     expect(train.OnFieldNr).toBe(lastField)
-    expect(testSection.rails[lastField].TrainID).toBe(id)
+    expect(testSection.GetRail(lastField).TrainID).toBe(id)
     expect(train.CurrentSpeed).toBe(0)
   })
   it('try moving try without be on a section', () => {
@@ -141,7 +141,7 @@ describe('Speeding, braking', () => {
     const StartFieldNR = 1
     const train = new Train(name, id, maxSpeed, startSpeed)
     train.SetOnSection(testSection, StartFieldNR)
-    expect(testSection.rails[StartFieldNR].TrainID).toBe(id)
+    expect(testSection.GetRail(StartFieldNR).TrainID).toBe(id)
     const { SpeedingUp } = CstTrain
     train.Running = true
     train.Thick()
@@ -167,7 +167,7 @@ describe('Speeding, braking', () => {
     const StartFieldNR = 1
     const train = new Train(name, id, maxSpeed, startSpeed)
     train.SetOnSection(testSection, StartFieldNR)
-    expect(testSection.rails[StartFieldNR].TrainID).toBe(id)
+    expect(testSection.GetRail(StartFieldNR).TrainID).toBe(id)
     const { Braking } = CstTrain
     train.Braking = true
     train.Thick()

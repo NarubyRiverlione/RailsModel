@@ -1,12 +1,12 @@
 {
   "Name": "test track",
-  "Sections": [
+  "sections": [
     {
       "Id": 1,
       "Status": 99,
       "FromSection": 0,
       "ToSection": 0,
-      "Rails": [
+      "rails": [
         {
           "TrainID": 0,
           "Exit": false,

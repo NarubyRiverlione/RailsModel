@@ -30,13 +30,13 @@ export default class Train {
 
   SetOnSection(onSection: Section, startFieldNr: number) {
     // must be on a valid field in the section
-    if (startFieldNr > onSection.RailAmount) {
-      throw new Error(`${TrainError.InvalidFieldInSection} ${this.OnFieldNr}/${onSection.RailAmount}`)
+    if (startFieldNr > onSection.CountRails) {
+      throw new Error(`${TrainError.InvalidFieldInSection} ${this.OnFieldNr}/${onSection.CountRails}`)
     }
 
     this.OnSection = onSection
     this.OnFieldNr = startFieldNr
-    this.OnSection.rails[startFieldNr].TrainID = this.Id
+    this.OnSection.GetRail(startFieldNr).TrainID = this.Id
   }
 
   Thick() {
@@ -57,14 +57,14 @@ export default class Train {
       this.TraveledDistance += this.CurrentSpeed
       if (this.TraveledDistance >= CstField.Length) {
         // check if there is a next field in the section
-        if (this.OnFieldNr < this.OnSection.RailAmount - 1) {
+        if (this.OnFieldNr < this.OnSection.CountRails - 1) {
           // move to next field, reset traveled distance
           this.TraveledDistance = 0
           // clear current field
-          this.OnSection.rails[this.OnFieldNr].TrainID = 0
+          this.OnSection.GetRail(this.OnFieldNr).TrainID = 0
           // occupy next field
           this.OnFieldNr += 1
-          this.OnSection.rails[this.OnFieldNr].TrainID = this.Id
+          this.OnSection.GetRail(this.OnFieldNr).TrainID = this.Id
         } else {
           // no next field
           this.CurrentSpeed = 0

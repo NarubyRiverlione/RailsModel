@@ -9,7 +9,7 @@ describe('Add rails', () => {
   describe('Empty section', () => {
     it('No fields at start, Status Red', () => {
       const empty = new Sections(123)
-      expect(empty.RailAmount).toBe(0)
+      expect(empty.CountRails).toBe(0)
       expect(empty.Id).toBe(123)
       expect(empty.Status).toBe(SectionStatus.Unknown)
     })
@@ -22,7 +22,7 @@ describe('Add rails', () => {
         emptySection.AddRail(newRail)
       } catch (error) {
         expect(error.message).toBe(SectionError.EmptyNoEntrance)
-        expect(emptySection.RailAmount).toBe(0)
+        expect(emptySection.CountRails).toBe(0)
       }
     })
     it('Add rail to section with entrance', () => {
@@ -30,16 +30,16 @@ describe('Add rails', () => {
       const newRail = new RailsMock(0, 0)
       newRail.Entrance = true
       emptySection.AddRail(newRail)
-      expect(emptySection.RailAmount).toBe(1)
-      expect(emptySection.rails[0]).toMatchObject(newRail)
+      expect(emptySection.CountRails).toBe(1)
+      expect(emptySection.GetRail(0)).toMatchObject(newRail)
     })
     it('Add rail to connected section', () => {
       const connectedSection = new Sections(123)
       connectedSection.FromSection = 1
       const newRail = new RailsMock(10, 30)
       connectedSection.AddRail(newRail)
-      expect(connectedSection.RailAmount).toBe(1)
-      expect(connectedSection.rails[0]).toMatchObject(newRail)
+      expect(connectedSection.CountRails).toBe(1)
+      expect(connectedSection.GetRail(0)).toMatchObject(newRail)
     })
     it('Invalid position = no direction', () => {
       expect(DirectionByPosition(99)).toBe(Direction.None)
@@ -54,33 +54,33 @@ describe('Add rails', () => {
         section = new Sections(1)
         entrance.Entrance = true
         section.AddRail(entrance)
-        expect(section.RailAmount).toBe(1)
+        expect(section.CountRails).toBe(1)
       })
       it('Prev Horizontal', () => {
-        section.rails[0].Direction = Direction.Horizontal
+        section.GetRail(0).Direction = Direction.Horizontal
         section.AddRail(newRail)
-        expect(section.rails[1].Direction).toBe(Direction.Left)
-        expect(section.rails[0].Direction).toBe(Direction.RightUp)
+        expect(section.GetRail(1).Direction).toBe(Direction.Left)
+        expect(section.GetRail(0).Direction).toBe(Direction.RightUp)
       })
       it('Prev Vertical', () => {
-        section.rails[0].Direction = Direction.Vertical
+        section.GetRail(0).Direction = Direction.Vertical
         section.AddRail(newRail)
-        expect(section.rails[1].Direction).toBe(Direction.Left)
-        expect(section.rails[0].Direction).toBe(Direction.DownLeft)
+        expect(section.GetRail(1).Direction).toBe(Direction.Left)
+        expect(section.GetRail(0).Direction).toBe(Direction.DownLeft)
       })
       it('Prev Left', () => {
-        section.rails[0].Direction = Direction.Left
+        section.GetRail(0).Direction = Direction.Left
         section.AddRail(newRail)
-        expect(section.rails[1].Direction).toBe(Direction.Left)
-        expect(section.rails[0].Direction).toBe(Direction.Left)
+        expect(section.GetRail(1).Direction).toBe(Direction.Left)
+        expect(section.GetRail(0).Direction).toBe(Direction.Left)
       })
       it('Prev Right', () => {
-        section.rails[0].Direction = Direction.Right
+        section.GetRail(0).Direction = Direction.Right
         try {
           section.AddRail(newRail)
         } catch (error) {
-          expect(section.RailAmount).toBe(1)
-          expect(section.rails[0].Direction).toBe(Direction.Right)
+          expect(section.CountRails).toBe(1)
+          expect(section.GetRail(0).Direction).toBe(Direction.Right)
           expect(error.message).toBe(SectionError.NotConnecting)
         }
       })
@@ -93,35 +93,35 @@ describe('Add rails', () => {
         section = new Sections(1)
         entrance.Entrance = true
         section.AddRail(entrance)
-        expect(section.RailAmount).toBe(1)
+        expect(section.CountRails).toBe(1)
       })
       it('Prev Horizontal', () => {
-        section.rails[0].Direction = Direction.Horizontal
+        section.GetRail(0).Direction = Direction.Horizontal
         try {
           section.AddRail(newRail)
         } catch (error) {
-          expect(section.RailAmount).toBe(1)
-          expect(section.rails[0].Direction).toBe(Direction.Horizontal)
+          expect(section.CountRails).toBe(1)
+          expect(section.GetRail(0).Direction).toBe(Direction.Horizontal)
           expect(error.message).toBe(SectionError.NotConnecting)
         }
       })
       it('Prev Vertical', () => {
-        section.rails[0].Direction = Direction.Vertical
+        section.GetRail(0).Direction = Direction.Vertical
         section.AddRail(newRail)
-        expect(section.rails[1].Direction).toBe(Direction.Vertical)
-        expect(section.rails[0].Direction).toBe(Direction.Vertical)
+        expect(section.GetRail(1).Direction).toBe(Direction.Vertical)
+        expect(section.GetRail(0).Direction).toBe(Direction.Vertical)
       })
       it('Prev Left', () => {
-        section.rails[0].Direction = Direction.Left
+        section.GetRail(0).Direction = Direction.Left
         section.AddRail(newRail)
-        expect(section.rails[1].Direction).toBe(Direction.Vertical)
-        expect(section.rails[0].Direction).toBe(Direction.UpRight)
+        expect(section.GetRail(1).Direction).toBe(Direction.Vertical)
+        expect(section.GetRail(0).Direction).toBe(Direction.UpRight)
       })
       it('Prev Right', () => {
-        section.rails[0].Direction = Direction.Right
+        section.GetRail(0).Direction = Direction.Right
         section.AddRail(newRail)
-        expect(section.rails[1].Direction).toBe(Direction.Vertical)
-        expect(section.rails[0].Direction).toBe(Direction.UpLeft)
+        expect(section.GetRail(1).Direction).toBe(Direction.Vertical)
+        expect(section.GetRail(0).Direction).toBe(Direction.UpLeft)
       })
     })
     describe('Position x+1 y-1 = 9', () => {
@@ -132,35 +132,35 @@ describe('Add rails', () => {
         section = new Sections(1)
         entrance.Entrance = true
         section.AddRail(entrance)
-        expect(section.RailAmount).toBe(1)
+        expect(section.CountRails).toBe(1)
       })
       it('Prev Horizontal', () => {
-        section.rails[0].Direction = Direction.Horizontal
+        section.GetRail(0).Direction = Direction.Horizontal
         section.AddRail(newRail)
-        expect(section.rails[1].Direction).toBe(Direction.Right)
-        expect(section.rails[0].Direction).toBe(Direction.LeftUp)
+        expect(section.GetRail(1).Direction).toBe(Direction.Right)
+        expect(section.GetRail(0).Direction).toBe(Direction.LeftUp)
       })
       it('Prev Vertical', () => {
-        section.rails[0].Direction = Direction.Vertical
+        section.GetRail(0).Direction = Direction.Vertical
         section.AddRail(newRail)
-        expect(section.rails[1].Direction).toBe(Direction.Right)
-        expect(section.rails[0].Direction).toBe(Direction.DownRight)
+        expect(section.GetRail(1).Direction).toBe(Direction.Right)
+        expect(section.GetRail(0).Direction).toBe(Direction.DownRight)
       })
       it('Prev Left', () => {
-        section.rails[0].Direction = Direction.Left
+        section.GetRail(0).Direction = Direction.Left
         try {
           section.AddRail(newRail)
         } catch (error) {
-          expect(section.RailAmount).toBe(1)
-          expect(section.rails[0].Direction).toBe(Direction.Left)
+          expect(section.CountRails).toBe(1)
+          expect(section.GetRail(0).Direction).toBe(Direction.Left)
           expect(error.message).toBe(SectionError.NotConnecting)
         }
       })
       it('Prev Right', () => {
-        section.rails[0].Direction = Direction.Right
+        section.GetRail(0).Direction = Direction.Right
         section.AddRail(newRail)
-        expect(section.rails[1].Direction).toBe(Direction.Right)
-        expect(section.rails[0].Direction).toBe(Direction.Right)
+        expect(section.GetRail(1).Direction).toBe(Direction.Right)
+        expect(section.GetRail(0).Direction).toBe(Direction.Right)
       })
     })
   })
@@ -173,37 +173,37 @@ describe('Add rails', () => {
         section = new Sections(1)
         entrance.Entrance = true
         section.AddRail(entrance)
-        expect(section.RailAmount).toBe(1)
+        expect(section.CountRails).toBe(1)
       })
       it('Prev Horizontal', () => {
-        section.rails[0].Direction = Direction.Horizontal
+        section.GetRail(0).Direction = Direction.Horizontal
         section.AddRail(newRail)
-        expect(section.rails[1].Direction).toBe(Direction.Horizontal)
-        expect(section.rails[0].Direction).toBe(Direction.Horizontal)
+        expect(section.GetRail(1).Direction).toBe(Direction.Horizontal)
+        expect(section.GetRail(0).Direction).toBe(Direction.Horizontal)
       })
       it('Prev Vertical', () => {
-        section.rails[0].Direction = Direction.Vertical
+        section.GetRail(0).Direction = Direction.Vertical
         try {
           section.AddRail(newRail)
         } catch (error) {
-          expect(section.RailAmount).toBe(1)
-          expect(section.rails[0].Direction).toBe(Direction.Vertical)
+          expect(section.CountRails).toBe(1)
+          expect(section.GetRail(0).Direction).toBe(Direction.Vertical)
           expect(error.message).toBe(SectionError.NotConnecting)
         }
       })
       it('Prev Left', () => {
-        section.rails[0].Direction = Direction.Left
+        section.GetRail(0).Direction = Direction.Left
         section.AddRail(newRail)
-        expect(section.rails[1].Direction).toBe(Direction.Horizontal)
-        expect(section.rails[0].Direction).toBe(Direction.LeftDown)
+        expect(section.GetRail(1).Direction).toBe(Direction.Horizontal)
+        expect(section.GetRail(0).Direction).toBe(Direction.LeftDown)
       })
       it('Prev Right', () => {
-        section.rails[0].Direction = Direction.Right
+        section.GetRail(0).Direction = Direction.Right
         try {
           section.AddRail(newRail)
         } catch (error) {
-          expect(section.RailAmount).toBe(1)
-          expect(section.rails[0].Direction).toBe(Direction.Vertical)
+          expect(section.CountRails).toBe(1)
+          expect(section.GetRail(0).Direction).toBe(Direction.Vertical)
           expect(error.message).toBe(SectionError.NotConnecting)
         }
       })
@@ -216,39 +216,39 @@ describe('Add rails', () => {
         section = new Sections(1)
         entrance.Entrance = true
         section.AddRail(entrance)
-        expect(section.RailAmount).toBe(1)
+        expect(section.CountRails).toBe(1)
       })
       it('Prev Horizontal', () => {
-        section.rails[0].Direction = Direction.Horizontal
+        section.GetRail(0).Direction = Direction.Horizontal
         section.AddRail(newRail)
-        expect(section.rails[1].Direction).toBe(Direction.Horizontal)
-        expect(section.rails[0].Direction).toBe(Direction.Horizontal)
+        expect(section.GetRail(1).Direction).toBe(Direction.Horizontal)
+        expect(section.GetRail(0).Direction).toBe(Direction.Horizontal)
       })
       it('Prev Vertical', () => {
-        section.rails[0].Direction = Direction.Vertical
+        section.GetRail(0).Direction = Direction.Vertical
         try {
           section.AddRail(newRail)
         } catch (error) {
-          expect(section.RailAmount).toBe(1)
-          expect(section.rails[0].Direction).toBe(Direction.Left)
+          expect(section.CountRails).toBe(1)
+          expect(section.GetRail(0).Direction).toBe(Direction.Left)
           expect(error.message).toBe(SectionError.NotConnecting)
         }
       })
       it('Prev Left', () => {
-        section.rails[0].Direction = Direction.Left
+        section.GetRail(0).Direction = Direction.Left
         try {
           section.AddRail(newRail)
         } catch (error) {
-          expect(section.RailAmount).toBe(1)
-          expect(section.rails[0].Direction).toBe(Direction.Left)
+          expect(section.CountRails).toBe(1)
+          expect(section.GetRail(0).Direction).toBe(Direction.Left)
           expect(error.message).toBe(SectionError.NotConnecting)
         }
       })
       it('Prev Right', () => {
-        section.rails[0].Direction = Direction.Right
+        section.GetRail(0).Direction = Direction.Right
         section.AddRail(newRail)
-        expect(section.rails[1].Direction).toBe(Direction.Horizontal)
-        expect(section.rails[0].Direction).toBe(Direction.RightDown)
+        expect(section.GetRail(1).Direction).toBe(Direction.Horizontal)
+        expect(section.GetRail(0).Direction).toBe(Direction.RightDown)
       })
     })
   })
@@ -261,37 +261,37 @@ describe('Add rails', () => {
         section = new Sections(1)
         entrance.Entrance = true
         section.AddRail(entrance)
-        expect(section.RailAmount).toBe(1)
+        expect(section.CountRails).toBe(1)
       })
       it('Prev Horizontal', () => {
-        section.rails[0].Direction = Direction.Horizontal
+        section.GetRail(0).Direction = Direction.Horizontal
         section.AddRail(newRail)
-        expect(section.rails[1].Direction).toBe(Direction.Right)
-        expect(section.rails[0].Direction).toBe(Direction.RightDown)
+        expect(section.GetRail(1).Direction).toBe(Direction.Right)
+        expect(section.GetRail(0).Direction).toBe(Direction.RightDown)
       })
       it('Prev Vertical', () => {
-        section.rails[0].Direction = Direction.Vertical
+        section.GetRail(0).Direction = Direction.Vertical
         section.AddRail(newRail)
-        expect(section.rails[1].Direction).toBe(Direction.Right)
-        expect(section.rails[0].Direction).toBe(Direction.UpLeft)
+        expect(section.GetRail(1).Direction).toBe(Direction.Right)
+        expect(section.GetRail(0).Direction).toBe(Direction.UpLeft)
       })
       it('Prev Left', () => {
-        section.rails[0].Direction = Direction.Left
+        section.GetRail(0).Direction = Direction.Left
         try {
           section.AddRail(newRail)
         } catch (error) {
-          expect(section.RailAmount).toBe(1)
-          expect(section.rails[0].Direction).toBe(Direction.Right)
+          expect(section.CountRails).toBe(1)
+          expect(section.GetRail(0).Direction).toBe(Direction.Right)
           expect(error.message).toBe(SectionError.NotConnecting)
         }
       })
       it('Prev Right', () => {
-        section.rails[0].Direction = Direction.Right
+        section.GetRail(0).Direction = Direction.Right
         try {
           section.AddRail(newRail)
         } catch (error) {
-          expect(section.RailAmount).toBe(1)
-          expect(section.rails[0].Direction).toBe(Direction.Right)
+          expect(section.CountRails).toBe(1)
+          expect(section.GetRail(0).Direction).toBe(Direction.Right)
           expect(error.message).toBe(SectionError.NotConnecting)
         }
       })
@@ -304,35 +304,35 @@ describe('Add rails', () => {
         section = new Sections(1)
         entrance.Entrance = true
         section.AddRail(entrance)
-        expect(section.RailAmount).toBe(1)
+        expect(section.CountRails).toBe(1)
       })
       it('Prev Horizontal', () => {
-        section.rails[0].Direction = Direction.Horizontal
+        section.GetRail(0).Direction = Direction.Horizontal
         try {
           section.AddRail(newRail)
         } catch (error) {
-          expect(section.RailAmount).toBe(1)
-          expect(section.rails[0].Direction).toBe(Direction.Horizontal)
+          expect(section.CountRails).toBe(1)
+          expect(section.GetRail(0).Direction).toBe(Direction.Horizontal)
           expect(error.message).toBe(SectionError.NotConnecting)
         }
       })
       it('Prev Vertical', () => {
-        section.rails[0].Direction = Direction.Vertical
+        section.GetRail(0).Direction = Direction.Vertical
         section.AddRail(newRail)
-        expect(section.rails[1].Direction).toBe(Direction.Vertical)
-        expect(section.rails[0].Direction).toBe(Direction.Vertical)
+        expect(section.GetRail(1).Direction).toBe(Direction.Vertical)
+        expect(section.GetRail(0).Direction).toBe(Direction.Vertical)
       })
       it('Prev Left', () => {
-        section.rails[0].Direction = Direction.Left
+        section.GetRail(0).Direction = Direction.Left
         section.AddRail(newRail)
-        expect(section.rails[1].Direction).toBe(Direction.Vertical)
-        expect(section.rails[0].Direction).toBe(Direction.DownLeft)
+        expect(section.GetRail(1).Direction).toBe(Direction.Vertical)
+        expect(section.GetRail(0).Direction).toBe(Direction.DownLeft)
       })
       it('Prev Right', () => {
-        section.rails[0].Direction = Direction.Right
+        section.GetRail(0).Direction = Direction.Right
         section.AddRail(newRail)
-        expect(section.rails[1].Direction).toBe(Direction.Vertical)
-        expect(section.rails[0].Direction).toBe(Direction.DownRight)
+        expect(section.GetRail(1).Direction).toBe(Direction.Vertical)
+        expect(section.GetRail(0).Direction).toBe(Direction.DownRight)
       })
     })
     describe('Position x+1 y+1 = 15', () => {
@@ -343,33 +343,33 @@ describe('Add rails', () => {
         section = new Sections(1)
         entrance.Entrance = true
         section.AddRail(entrance)
-        expect(section.RailAmount).toBe(1)
+        expect(section.CountRails).toBe(1)
       })
       it('Prev Horizontal', () => {
-        section.rails[0].Direction = Direction.Horizontal
+        section.GetRail(0).Direction = Direction.Horizontal
         section.AddRail(newRail)
-        expect(section.rails[1].Direction).toBe(Direction.Left)
-        expect(section.rails[0].Direction).toBe(Direction.LeftDown)
+        expect(section.GetRail(1).Direction).toBe(Direction.Left)
+        expect(section.GetRail(0).Direction).toBe(Direction.LeftDown)
       })
       it('Prev Vertical', () => {
-        section.rails[0].Direction = Direction.Vertical
+        section.GetRail(0).Direction = Direction.Vertical
         section.AddRail(newRail)
-        expect(section.rails[1].Direction).toBe(Direction.Left)
-        expect(section.rails[0].Direction).toBe(Direction.UpRight)
+        expect(section.GetRail(1).Direction).toBe(Direction.Left)
+        expect(section.GetRail(0).Direction).toBe(Direction.UpRight)
       })
       it('Prev Left', () => {
-        section.rails[0].Direction = Direction.Left
+        section.GetRail(0).Direction = Direction.Left
         section.AddRail(newRail)
-        expect(section.rails[1].Direction).toBe(Direction.Left)
-        expect(section.rails[0].Direction).toBe(Direction.Left)
+        expect(section.GetRail(1).Direction).toBe(Direction.Left)
+        expect(section.GetRail(0).Direction).toBe(Direction.Left)
       })
       it('Prev Right', () => {
-        section.rails[0].Direction = Direction.Right
+        section.GetRail(0).Direction = Direction.Right
         try {
           section.AddRail(newRail)
         } catch (error) {
-          expect(section.RailAmount).toBe(1)
-          expect(section.rails[0].Direction).toBe(Direction.Right)
+          expect(section.CountRails).toBe(1)
+          expect(section.GetRail(0).Direction).toBe(Direction.Right)
           expect(error.message).toBe(SectionError.NotConnecting)
         }
       })

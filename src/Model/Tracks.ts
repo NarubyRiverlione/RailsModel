@@ -1,38 +1,53 @@
 import { promises as fsPromises } from 'fs'
+import { Rail } from './Rails'
 import Sections, { Section } from './Sections'
 import Train from './Train'
 
-export type Track = {
+export interface Track {
   Name: string
-  Sections: Section[]
+  readonly sections: Section[]
   Trains: Train[]
+  AddSection: (addedSection: Section) => void
 }
 
 export default class Tracks implements Track {
   Name: string
-  Sections: Section[]
+  readonly sections: Section[]
   Trains: Train[]
 
   constructor() {
     this.Name = ''
-    this.Sections = []
+    this.sections = []
     this.Trains = []
   }
 
-  get SectionAmount() { return this.Sections.length }
+  get SectionAmount() { return this.sections.length }
+
+  AddSection(addedSection: Section) {
+    this.sections.push(addedSection)
+  }
 
   ParseJson(trackFile: string) {
     const trackObj = JSON.parse(trackFile.toString())
     this.Name = trackObj.Name
+    // trackObj.sections.forEach((readSection: Section) => {
+    //   const addingSection: Section = { ...readSection }
+    //   this.AddSection(addingSection)
+    // })
 
-    trackObj.Sections.forEach((section: Section, index: number) => {
-      // add section
-      this.Sections.push(new Sections(section.Id))
+    trackObj.sections.forEach((readSection: any) => {
+      // parse loaded section
+      const addingSection = new Sections(readSection.Id)
+      addingSection.Status = readSection.Status
+      addingSection.FromSection = readSection.FromSection
+      addingSection.ToSection = readSection.ToSection
 
-      section.rails.forEach((rail) => {
-        // add rail to section
-        this.Sections[index].AddRail(rail)
+      readSection.rails.forEach((readRail: Rail) => {
+        // add rail to section, bypass the Direction calc
+        addingSection.AddRail(readRail, true)
       })
+      // add completed parsed section to trace
+      this.AddSection(addingSection)
     })
   }
 

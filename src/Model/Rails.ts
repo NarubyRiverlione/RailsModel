@@ -9,7 +9,6 @@ export type Rail = {
   Collision: boolean
   Entrance: boolean
   Exit: boolean
-
 }
 
 export default class Rails implements Rail {
