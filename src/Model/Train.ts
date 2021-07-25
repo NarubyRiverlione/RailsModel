@@ -13,6 +13,7 @@ export default class Train {
   Running: boolean
   Braking: boolean
   TraveledDistance: number
+  NextStationId: number
 
   constructor(name: string, id: number, maxSpeed: number, currentSpeed = 0) {
     this.Name = name
@@ -24,7 +25,7 @@ export default class Train {
     this.TraveledDistance = 0
     // constructor must alway works, set train later on section/field to do  checks
     this.OnFieldNr = -1
-
+    this.NextStationId = 0
     makeAutoObservable(this)
   }
 
@@ -55,6 +56,7 @@ export default class Train {
         ? this.CurrentSpeed += CstTrain.SpeedingUp : this.MaxSpeed
       // add distance inside the current field
       this.TraveledDistance += this.CurrentSpeed
+      // travel to next rail
       if (this.TraveledDistance >= CstRail.Length) {
         // check if there is a next field in the section
         if (this.OnFieldNr < this.OnSection.CountRails - 1) {
@@ -65,6 +67,12 @@ export default class Train {
           // occupy next field
           this.OnFieldNr += 1
           this.OnSection.GetRail(this.OnFieldNr).OccupyBeTrain(this.Id)
+          // check if this is the next station
+          if (this.NextStationId === this.OnSection.GetRail(this.OnFieldNr).NextToStationId) {
+            // TODO brake x rails before station instead of sudden full stop
+            this.Running = false
+            this.CurrentSpeed = 0
+          }
         } else {
           // no next field
           this.CurrentSpeed = 0

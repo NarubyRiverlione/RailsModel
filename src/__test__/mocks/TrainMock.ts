@@ -11,6 +11,7 @@ export default class TrainMock implements Train {
   Running: boolean
   Braking: boolean
   TraveledDistance: number
+  NextStationId: number
 
   constructor(name: string, id: number, maxSpeed: number, currentSpeed = 0) {
     this.Name = name
@@ -21,6 +22,7 @@ export default class TrainMock implements Train {
     this.Running = false
     this.Braking = false
     this.TraveledDistance = 0
+    this.NextStationId = 0
   }
 
   SetOnSection(onSection: Section, startFieldNr: number) { }

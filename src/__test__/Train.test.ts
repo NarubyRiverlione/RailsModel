@@ -1,16 +1,21 @@
 /* eslint-disable max-len */
 import Train from '../Model/Train'
 import SectionsMock from './mocks/SectionsMock'
-import RailsMock from './mocks/RailsMock'
+import Rails from '../Model/Rails'
 import { CstTrain, CstError } from '../Cst'
+import Places, { PlaceType } from '../Model/Places'
 
 const { TrainError } = CstError
-const FieldsInTestSection = 25
+const RailsInTestSection = 25
 const StartSectionX = 10
-const testSection = new SectionsMock(10)
-for (let fieldNr = 0; fieldNr < FieldsInTestSection; fieldNr += 1) {
-  testSection.AddRail(new RailsMock(StartSectionX + fieldNr, 20))
-}
+let testSection: SectionsMock
+
+beforeEach(() => {
+  testSection = new SectionsMock(10)
+  for (let fieldNr = 0; fieldNr < RailsInTestSection; fieldNr += 1) {
+    testSection.AddRail(new Rails(StartSectionX + fieldNr, 20, 1))
+  }
+})
 
 describe('Setup new train', () => {
   it('Make Stopped train and put it on a section', () => {
@@ -27,10 +32,12 @@ describe('Setup new train', () => {
     expect(train.CurrentSpeed).toBe(0)
     expect(train.OnSection).toBe(undefined)
     expect(train.OnFieldNr).toBe(-1)
+    expect(train.NextStationId).toBe(0)
 
     train.SetOnSection(testSection, fieldNr)
     expect(train.OnSection).toMatchObject(testSection)
-    expect(testSection.GetRail(fieldNr).GetTrain).toBe(id)
+    const onRail = testSection.GetRail(fieldNr)
+    expect(onRail.GetTrain).toBe(id)
     expect(train.OnFieldNr).toBe(fieldNr)
   })
   it('Try set a train outside the section', () => {
@@ -39,7 +46,7 @@ describe('Setup new train', () => {
     const maxSpeed = 120
     const testTrain = new Train(name, id, maxSpeed)
     try {
-      testTrain.SetOnSection(testSection, FieldsInTestSection + 1)
+      testTrain.SetOnSection(testSection, RailsInTestSection + 1)
       testTrain.Running = true
     } catch (err) {
       expect(testTrain.OnSection).toBe(undefined)
@@ -106,9 +113,9 @@ describe('Train movements', () => {
     const id = 1
     const maxSpeed = 250
     const currentSpeed = 250
-    const lastField = FieldsInTestSection - 1 // count start at zero
+    const lastField = RailsInTestSection - 1 // count start at zero
     const train = new Train(name, id, maxSpeed, currentSpeed)
-    expect(testSection.CountRails).toBe(FieldsInTestSection)
+    expect(testSection.CountRails).toBe(RailsInTestSection)
     train.SetOnSection(testSection, lastField)
     train.Running = true
     expect(testSection.GetRail(lastField).GetTrain).toBe(id)
@@ -128,6 +135,64 @@ describe('Train movements', () => {
     const train = new Train(name, id, maxSpeed, currentSpeed)
     train.Thick()
     expect(train.OnFieldNr).toBe(-1)
+  })
+  it('Move into next planned station = stop', () => {
+    const name = 'Test Train'
+    const id = 1
+    const maxSpeed = 250
+    const currentSpeed = 250
+    const StartFieldNR = RailsInTestSection - 1
+    const nextStationID = 36
+    // add station to test section, then add 1 rail passed the station
+    const stationX = StartSectionX + RailsInTestSection
+    const station = new Rails(stationX, 20, 1)
+    station.ByPlace = new Places(nextStationID, 'test station', PlaceType.Station)
+    testSection.AddRail(station)
+
+    testSection.AddRail(new Rails(stationX + 1, 20, 1))
+    expect(testSection.CountRails).toBe(RailsInTestSection + 2)
+    expect(testSection.GetRail(RailsInTestSection).ByPlace.Type).toBe(PlaceType.Station)
+
+    const train = new Train(name, id, maxSpeed, currentSpeed)
+    train.SetOnSection(testSection, StartFieldNR)
+    train.NextStationId = nextStationID
+    train.Running = true
+
+    train.Thick()
+    train.Thick()
+
+    expect(train.OnFieldNr).toBe(RailsInTestSection)
+    expect(train.Running).toBeFalsy()
+  })
+  it('Move into next station that is not the next = continue ', () => {
+    const name = 'Test Train'
+    const id = 1
+    const maxSpeed = 250
+    const currentSpeed = 250
+    const StartFieldNR = RailsInTestSection - 1
+    const nextStationID = 36
+    const nextPlannedStation = 45
+    // add station to test section, then add 1 rail passed the station
+    const stationX = StartSectionX + RailsInTestSection
+    const station = new Rails(stationX, 20, 1)
+    station.ByPlace = new Places(nextStationID, 'test station', PlaceType.Station)
+    testSection.AddRail(station)
+
+    testSection.AddRail(new Rails(stationX + 1, 20, 1))
+    expect(testSection.CountRails).toBe(RailsInTestSection + 2)
+    expect(testSection.GetRail(RailsInTestSection).ByPlace.Type).toBe(PlaceType.Station)
+
+    const train = new Train(name, id, maxSpeed, currentSpeed)
+    train.SetOnSection(testSection, StartFieldNR)
+    train.NextStationId = nextPlannedStation
+    train.Running = true
+
+    train.Thick()
+    train.Thick()
+
+    expect(train.OnFieldNr).toBe(RailsInTestSection)
+    expect(testSection.GetRail(train.OnFieldNr).NextToStationId).not.toBe(nextPlannedStation)
+    expect(train.Running).toBeTruthy()
   })
 })
 

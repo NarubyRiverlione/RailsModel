@@ -2,19 +2,19 @@ import Direction from '../Model/Direction'
 import { PlaceType } from '../Model/Places'
 import Tracks from '../Model/Tracks'
 import Train from '../Model/Train'
-import RailsMock from './mocks/RailsMock'
+import Rails from '../Model/Rails'
 import SectionMocks from './mocks/SectionsMock'
 
 const makeTestTrack = () => {
   const section1 = new SectionMocks(1)
-  section1.AddRail(new RailsMock(5, 2, Direction.Vertical))
-  section1.AddRail(new RailsMock(6, 2, Direction.Vertical))
-  section1.AddRail(new RailsMock(7, 2, Direction.Vertical))
+  section1.AddRail(new Rails(5, 2, Direction.Vertical))
+  section1.AddRail(new Rails(6, 2, Direction.Vertical))
+  section1.AddRail(new Rails(7, 2, Direction.Vertical))
   const section2 = new SectionMocks(2)
-  section2.AddRail(new RailsMock(5, 12, Direction.Left))
-  section2.AddRail(new RailsMock(6, 13, Direction.Left))
-  section2.AddRail(new RailsMock(7, 14, Direction.Left))
-  section2.AddRail(new RailsMock(8, 15, Direction.Left))
+  section2.AddRail(new Rails(5, 12, Direction.Left))
+  section2.AddRail(new Rails(6, 13, Direction.Left))
+  section2.AddRail(new Rails(7, 14, Direction.Left))
+  section2.AddRail(new Rails(8, 15, Direction.Left))
   return { section1, section2 }
 }
 
