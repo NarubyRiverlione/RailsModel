@@ -20,6 +20,7 @@ export type Section = {
   FromSection: number
   ToSection: number
   Status: SectionStatus
+  RailAmount: number
 }
 
 export default class Sections implements Section {
@@ -37,6 +38,7 @@ export default class Sections implements Section {
     this.Status = SectionStatus.Unknown
     makeAutoObservable(this)
   }
+  get RailAmount() { return this.Rails.length }
 
   AddRail(addField: Rail) {
     // only add entrance to empty section that isn't connected to other section

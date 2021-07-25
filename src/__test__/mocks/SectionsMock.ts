@@ -15,4 +15,6 @@ export default class SectionMocks implements Section {
     this.ToSection = 0
     this.Status = SectionStatus.Red
   }
+
+  get RailAmount() { return this.Rails.length }
 }

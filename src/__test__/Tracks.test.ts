@@ -24,42 +24,41 @@ describe('Make track with sections', () => {
     saveTrack.Sections.push(section1)
     saveTrack.Sections.push(section2)
 
-    expect(saveTrack.Sections.length).toBe(2)
-    expect(saveTrack.Sections[0].Rails.length).toBe(3)
-    expect(saveTrack.Sections[1].Rails.length).toBe(4)
+    expect(saveTrack.SectionAmount).toBe(2)
   })
 })
 
 describe('Read & Save', () => {
-  it('Import track', async () => {
+  it('Import test loop track', async () => {
     const testTrack = new Tracks()
-    await testTrack.Read('./src/__test__/testTrack.json')
+    await testTrack.Read('./src/__test__/testLoopTrack.json')
     expect(testTrack.Name).toBe('test track')
 
-    expect(testTrack.Sections.length).toBe(1)
-    const { Sections } = testTrack
-    const { Rails } = Sections[0]
-    expect(Rails.length).toBe(11)
-    expect(Rails[0].Entrance).toBeTruthy()
-    expect(Rails[10].Exit).toBeTruthy()
+    expect(testTrack.SectionAmount).toBe(1)
+    const firstSection = testTrack.Sections[0]
+
+    expect(firstSection.RailAmount).toBe(18)
+    expect(firstSection.Rails[0].Entrance).toBeTruthy()
+    expect(firstSection.Rails[17].Exit).toBeTruthy()
   })
 
   it('Save track & read it again to verify', async () => {
-    const section1 = new SectionMocks(1)
-    section1.Rails.push(new RailsMock(5, 2, Direction.Vertical))
-    section1.Rails.push(new RailsMock(6, 2, Direction.Vertical))
-    section1.Rails.push(new RailsMock(7, 2, Direction.Vertical))
-    const saveTrack = new Tracks()
     const trackName = 'test save'
+
+    const saveTrack = new Tracks()
     saveTrack.Name = trackName
+    const { section1, section2 } = makeTestTrack()
     saveTrack.Sections.push(section1)
+    saveTrack.Sections.push(section2)
+
     await saveTrack.Save('.//src/__test__/testSave.json')
 
     const testTrack = new Tracks()
     await testTrack.Read('./src/__test__/testSave.json')
     expect(testTrack.Name).toBe(trackName)
-    expect(testTrack.Sections.length).toBe(1)
-    expect(testTrack.Sections[0].Rails.length).toBe(3)
+    expect(testTrack.SectionAmount).toBe(2)
+    expect(testTrack.Sections[0].RailAmount).toBe(3)
+    expect(testTrack.Sections[1].RailAmount).toBe(4)
   })
 })
 

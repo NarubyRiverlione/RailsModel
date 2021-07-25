@@ -1,5 +1,5 @@
 import { promises as fsPromises } from 'fs'
-import { Section } from './Sections'
+import Sections, { Section } from './Sections'
 import Train from './Train'
 
 export type Track = {
@@ -19,10 +19,21 @@ export default class Tracks implements Track {
     this.Trains = []
   }
 
+  get SectionAmount() { return this.Sections.length }
+
   ParseJson(trackFile: string) {
     const trackObj = JSON.parse(trackFile.toString())
     this.Name = trackObj.Name
-    this.Sections = trackObj.Sections
+
+    trackObj.Sections.forEach((section: Section, index: number) => {
+      // add section
+      this.Sections.push(new Sections(section.Id))
+
+      section.Rails.forEach((rail) => {
+        // add rail to section
+        this.Sections[index].Rails.push(rail)
+      })
+    })
   }
 
   async Read(FileName: string) {

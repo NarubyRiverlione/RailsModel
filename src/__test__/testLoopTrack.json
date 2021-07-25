@@ -1,0 +1,175 @@
+{
+  "Name": "test track",
+  "Sections": [
+    {
+      "Id": 1,
+      "Status": 99,
+      "FromSection": 0,
+      "ToSection": 0,
+      "Rails": [
+        {
+          "TrainID": 0,
+          "Exit": false,
+          "Collision": false,
+          "X": 200,
+          "Y": 100,
+          "Direction": 2,
+          "Entrance": true
+        },
+        {
+          "TrainID": 0,
+          "Exit": false,
+          "Entrance": false,
+          "Collision": false,
+          "X": 210,
+          "Y": 100,
+          "Direction": 18
+        },
+        {
+          "TrainID": 0,
+          "Exit": false,
+          "Entrance": false,
+          "Collision": false,
+          "X": 220,
+          "Y": 90,
+          "Direction": 4
+        },
+        {
+          "TrainID": 0,
+          "Exit": false,
+          "Entrance": false,
+          "Collision": false,
+          "X": 230,
+          "Y": 80,
+          "Direction": 22
+        },
+        {
+          "TrainID": 0,
+          "Exit": false,
+          "Entrance": false,
+          "Collision": false,
+          "X": 240,
+          "Y": 80,
+          "Direction": 2
+        },
+        {
+          "TrainID": 0,
+          "Exit": false,
+          "Entrance": false,
+          "Collision": false,
+          "X": 250,
+          "Y": 80,
+          "Direction": 30
+        },
+        {
+          "TrainID": 0,
+          "Exit": false,
+          "Entrance": false,
+          "Collision": false,
+          "X": 260,
+          "Y": 90,
+          "Direction": 8
+        },
+        {
+          "TrainID": 0,
+          "Exit": false,
+          "Entrance": false,
+          "Collision": false,
+          "X": 270,
+          "Y": 100,
+          "Direction": 5
+        },
+        {
+          "TrainID": 0,
+          "Exit": false,
+          "Entrance": false,
+          "Collision": false,
+          "X": 270,
+          "Y": 110,
+          "Direction": 1
+        },
+        {
+          "TrainID": 0,
+          "Exit": false,
+          "Entrance": false,
+          "Collision": false,
+          "X": 270,
+          "Y": 120,
+          "Direction": 1
+        },
+        {
+          "TrainID": 0,
+          "Exit": false,
+          "Entrance": false,
+          "Collision": false,
+          "X": 270,
+          "Y": 130,
+          "Direction": 11
+        },
+        {
+          "TrainID": 0,
+          "Exit": false,
+          "Entrance": false,
+          "Collision": false,
+          "X": 260,
+          "Y": 140,
+          "Direction": 4
+        },
+        {
+          "TrainID": 0,
+          "Exit": false,
+          "Entrance": false,
+          "Collision": false,
+          "X": 250,
+          "Y": 150,
+          "Direction": 18
+        },
+        {
+          "TrainID": 0,
+          "Exit": false,
+          "Entrance": false,
+          "Collision": false,
+          "X": 240,
+          "Y": 150,
+          "Direction": 2
+        },
+        {
+          "TrainID": 0,
+          "Exit": false,
+          "Entrance": false,
+          "Collision": false,
+          "X": 230,
+          "Y": 150,
+          "Direction": 10
+        },
+        {
+          "TrainID": 0,
+          "Exit": false,
+          "Entrance": false,
+          "Collision": false,
+          "X": 220,
+          "Y": 140,
+          "Direction": 8
+        },
+        {
+          "TrainID": 0,
+          "Exit": false,
+          "Entrance": false,
+          "Collision": false,
+          "X": 210,
+          "Y": 130,
+          "Direction": 30
+        },
+        {
+          "TrainID": 0,
+          "Exit": true,
+          "Entrance": false,
+          "Collision": false,
+          "X": 200,
+          "Y": 130,
+          "Direction": 2
+        }
+      ]
+    }
+  ]
+}

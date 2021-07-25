@@ -9,7 +9,7 @@ describe('Add rails', () => {
   describe('Empty section', () => {
     it('No fields at start, Status Red', () => {
       const empty = new Sections(123)
-      expect(empty.Rails.length).toBe(0)
+      expect(empty.RailAmount).toBe(0)
       expect(empty.Id).toBe(123)
       expect(empty.Status).toBe(SectionStatus.Unknown)
     })
@@ -22,7 +22,7 @@ describe('Add rails', () => {
         emptySection.AddRail(newRail)
       } catch (error) {
         expect(error.message).toBe(SectionError.EmptyNoEntrance)
-        expect(emptySection.Rails.length).toBe(0)
+        expect(emptySection.RailAmount).toBe(0)
       }
     })
     it('Add rail to section with entrance', () => {
@@ -30,7 +30,7 @@ describe('Add rails', () => {
       const newRail = new RailsMock(0, 0)
       newRail.Entrance = true
       emptySection.AddRail(newRail)
-      expect(emptySection.Rails.length).toBe(1)
+      expect(emptySection.RailAmount).toBe(1)
       expect(emptySection.Rails[0]).toMatchObject(newRail)
     })
     it('Add rail to connected section', () => {
@@ -38,7 +38,7 @@ describe('Add rails', () => {
       connectedSection.FromSection = 1
       const newRail = new RailsMock(10, 30)
       connectedSection.AddRail(newRail)
-      expect(connectedSection.Rails.length).toBe(1)
+      expect(connectedSection.RailAmount).toBe(1)
       expect(connectedSection.Rails[0]).toMatchObject(newRail)
     })
     it('Invalid position = no direction', () => {
@@ -54,7 +54,7 @@ describe('Add rails', () => {
         section = new Sections(1)
         entrance.Entrance = true
         section.AddRail(entrance)
-        expect(section.Rails.length).toBe(1)
+        expect(section.RailAmount).toBe(1)
       })
       it('Prev Horizontal', () => {
         section.Rails[0].Direction = Direction.Horizontal
@@ -79,7 +79,7 @@ describe('Add rails', () => {
         try {
           section.AddRail(newRail)
         } catch (error) {
-          expect(section.Rails.length).toBe(1)
+          expect(section.RailAmount).toBe(1)
           expect(section.Rails[0].Direction).toBe(Direction.Right)
           expect(error.message).toBe(SectionError.NotConnecting)
         }
@@ -93,14 +93,14 @@ describe('Add rails', () => {
         section = new Sections(1)
         entrance.Entrance = true
         section.AddRail(entrance)
-        expect(section.Rails.length).toBe(1)
+        expect(section.RailAmount).toBe(1)
       })
       it('Prev Horizontal', () => {
         section.Rails[0].Direction = Direction.Horizontal
         try {
           section.AddRail(newRail)
         } catch (error) {
-          expect(section.Rails.length).toBe(1)
+          expect(section.RailAmount).toBe(1)
           expect(section.Rails[0].Direction).toBe(Direction.Horizontal)
           expect(error.message).toBe(SectionError.NotConnecting)
         }
@@ -132,7 +132,7 @@ describe('Add rails', () => {
         section = new Sections(1)
         entrance.Entrance = true
         section.AddRail(entrance)
-        expect(section.Rails.length).toBe(1)
+        expect(section.RailAmount).toBe(1)
       })
       it('Prev Horizontal', () => {
         section.Rails[0].Direction = Direction.Horizontal
@@ -151,7 +151,7 @@ describe('Add rails', () => {
         try {
           section.AddRail(newRail)
         } catch (error) {
-          expect(section.Rails.length).toBe(1)
+          expect(section.RailAmount).toBe(1)
           expect(section.Rails[0].Direction).toBe(Direction.Left)
           expect(error.message).toBe(SectionError.NotConnecting)
         }
@@ -173,7 +173,7 @@ describe('Add rails', () => {
         section = new Sections(1)
         entrance.Entrance = true
         section.AddRail(entrance)
-        expect(section.Rails.length).toBe(1)
+        expect(section.RailAmount).toBe(1)
       })
       it('Prev Horizontal', () => {
         section.Rails[0].Direction = Direction.Horizontal
@@ -186,7 +186,7 @@ describe('Add rails', () => {
         try {
           section.AddRail(newRail)
         } catch (error) {
-          expect(section.Rails.length).toBe(1)
+          expect(section.RailAmount).toBe(1)
           expect(section.Rails[0].Direction).toBe(Direction.Vertical)
           expect(error.message).toBe(SectionError.NotConnecting)
         }
@@ -202,7 +202,7 @@ describe('Add rails', () => {
         try {
           section.AddRail(newRail)
         } catch (error) {
-          expect(section.Rails.length).toBe(1)
+          expect(section.RailAmount).toBe(1)
           expect(section.Rails[0].Direction).toBe(Direction.Vertical)
           expect(error.message).toBe(SectionError.NotConnecting)
         }
@@ -216,7 +216,7 @@ describe('Add rails', () => {
         section = new Sections(1)
         entrance.Entrance = true
         section.AddRail(entrance)
-        expect(section.Rails.length).toBe(1)
+        expect(section.RailAmount).toBe(1)
       })
       it('Prev Horizontal', () => {
         section.Rails[0].Direction = Direction.Horizontal
@@ -229,7 +229,7 @@ describe('Add rails', () => {
         try {
           section.AddRail(newRail)
         } catch (error) {
-          expect(section.Rails.length).toBe(1)
+          expect(section.RailAmount).toBe(1)
           expect(section.Rails[0].Direction).toBe(Direction.Left)
           expect(error.message).toBe(SectionError.NotConnecting)
         }
@@ -239,7 +239,7 @@ describe('Add rails', () => {
         try {
           section.AddRail(newRail)
         } catch (error) {
-          expect(section.Rails.length).toBe(1)
+          expect(section.RailAmount).toBe(1)
           expect(section.Rails[0].Direction).toBe(Direction.Left)
           expect(error.message).toBe(SectionError.NotConnecting)
         }
@@ -261,7 +261,7 @@ describe('Add rails', () => {
         section = new Sections(1)
         entrance.Entrance = true
         section.AddRail(entrance)
-        expect(section.Rails.length).toBe(1)
+        expect(section.RailAmount).toBe(1)
       })
       it('Prev Horizontal', () => {
         section.Rails[0].Direction = Direction.Horizontal
@@ -280,7 +280,7 @@ describe('Add rails', () => {
         try {
           section.AddRail(newRail)
         } catch (error) {
-          expect(section.Rails.length).toBe(1)
+          expect(section.RailAmount).toBe(1)
           expect(section.Rails[0].Direction).toBe(Direction.Right)
           expect(error.message).toBe(SectionError.NotConnecting)
         }
@@ -290,7 +290,7 @@ describe('Add rails', () => {
         try {
           section.AddRail(newRail)
         } catch (error) {
-          expect(section.Rails.length).toBe(1)
+          expect(section.RailAmount).toBe(1)
           expect(section.Rails[0].Direction).toBe(Direction.Right)
           expect(error.message).toBe(SectionError.NotConnecting)
         }
@@ -304,14 +304,14 @@ describe('Add rails', () => {
         section = new Sections(1)
         entrance.Entrance = true
         section.AddRail(entrance)
-        expect(section.Rails.length).toBe(1)
+        expect(section.RailAmount).toBe(1)
       })
       it('Prev Horizontal', () => {
         section.Rails[0].Direction = Direction.Horizontal
         try {
           section.AddRail(newRail)
         } catch (error) {
-          expect(section.Rails.length).toBe(1)
+          expect(section.RailAmount).toBe(1)
           expect(section.Rails[0].Direction).toBe(Direction.Horizontal)
           expect(error.message).toBe(SectionError.NotConnecting)
         }
@@ -343,7 +343,7 @@ describe('Add rails', () => {
         section = new Sections(1)
         entrance.Entrance = true
         section.AddRail(entrance)
-        expect(section.Rails.length).toBe(1)
+        expect(section.RailAmount).toBe(1)
       })
       it('Prev Horizontal', () => {
         section.Rails[0].Direction = Direction.Horizontal
@@ -368,7 +368,7 @@ describe('Add rails', () => {
         try {
           section.AddRail(newRail)
         } catch (error) {
-          expect(section.Rails.length).toBe(1)
+          expect(section.RailAmount).toBe(1)
           expect(section.Rails[0].Direction).toBe(Direction.Right)
           expect(error.message).toBe(SectionError.NotConnecting)
         }
