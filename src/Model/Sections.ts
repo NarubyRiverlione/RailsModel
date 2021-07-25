@@ -4,6 +4,7 @@ import {
   ConnectionFromPrevious, Position, DirectionByPosition,
 } from './Direction'
 import { CstError } from '../Cst'
+import { PlaceType } from './Places'
 
 const { SectionError } = CstError
 
@@ -20,8 +21,9 @@ export interface Section {
   ToSection: number
   Status: SectionStatus
   CountRails: number
+
   GetRail: (railNr: number) => Rail
-  AddRail: (addRail: Rail) => void
+  AddRail: (addingRail: Rail, bypassDirectionCalc?: boolean) => void
 }
 
 export default class Sections implements Section {
@@ -43,26 +45,26 @@ export default class Sections implements Section {
 
   GetRail(railNr: number) { return this.rails[railNr] }
 
-  AddRail(addRail: Rail, bypassDirectionCalc = false) {
+  AddRail(addingRail: Rail, bypassDirectionCalc = false) {
     // when adding rail from a saved json track file, don't change the Direction
-    if (bypassDirectionCalc) { this.rails.push(addRail); return }
+    if (bypassDirectionCalc) { this.rails.push(addingRail); return }
 
     // only add entrance to empty section that isn't connected to other section
-    if (this.rails.length === 0 && addRail.Entrance && this.FromSection === 0) {
-      this.rails.push(addRail); return
+    if (this.rails.length === 0 && addingRail.ByPlace.Type === PlaceType.Entrance && this.FromSection === 0) {
+      this.rails.push(addingRail); return
     }
     // don't add rail to empty section that that's not connected and doesn't have an entrance
-    if (this.rails.length === 0 && this.FromSection === 0 && !addRail.Entrance) {
+    if (this.rails.length === 0 && this.FromSection === 0 && addingRail.ByPlace.Type !== PlaceType.Entrance) {
       throw new Error(SectionError.EmptyNoEntrance)
     }
     //  add first rail to empty section that is  connected to other section
     if (this.rails.length === 0 && this.FromSection !== 0) {
-      this.rails.push(addRail); return
+      this.rails.push(addingRail); return
     }
     const previousRail = this.rails[this.rails.length - 1]
-    const postion = Position(addRail.X - previousRail.X, addRail.Y - previousRail.Y)
+    const postion = Position(addingRail.X - previousRail.X, addingRail.Y - previousRail.Y)
     // set calculated direction, don't use constructor because there are other fields (ex. Exit)
-    const newRail: Rail = { ...addRail, Direction: DirectionByPosition(postion) }
+    const newRail: Rail = { ...addingRail, Direction: DirectionByPosition(postion) }
     // change previous rail to make the connection
     const connection = postion * previousRail.Direction
     // console.log(previousRail.Direction)

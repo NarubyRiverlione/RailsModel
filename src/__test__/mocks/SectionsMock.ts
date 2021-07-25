@@ -1,12 +1,12 @@
+import { Rail } from '../../Model/Rails'
 import { Section, SectionStatus } from '../../Model/Sections'
-import RailsMock from './RailsMock'
 
 export default class SectionMocks implements Section {
   Id: number
   FromSection: number
   ToSection: number
   Status: SectionStatus
-  private rails: RailsMock[]
+  private rails: Rail[]
 
   constructor(id: number) {
     this.Id = id
@@ -20,7 +20,7 @@ export default class SectionMocks implements Section {
 
   GetRail(railNr: number) { return this.rails[railNr] }
 
-  AddRail(addRail: RailsMock) {
-    this.rails.push(addRail)
+  AddRail(addingRail: Rail) {
+    this.rails.push(addingRail)
   }
 }

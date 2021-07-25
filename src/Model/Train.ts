@@ -1,6 +1,6 @@
 import { makeAutoObservable } from 'mobx'
 import { Section } from './Sections'
-import { CstError, CstTrain, CstField } from '../Cst'
+import { CstError, CstTrain, CstRail } from '../Cst'
 
 const { TrainError } = CstError
 export default class Train {
@@ -36,7 +36,7 @@ export default class Train {
 
     this.OnSection = onSection
     this.OnFieldNr = startFieldNr
-    this.OnSection.GetRail(startFieldNr).TrainID = this.Id
+    this.OnSection.GetRail(startFieldNr).OccupyBeTrain(this.Id)
   }
 
   Thick() {
@@ -55,16 +55,16 @@ export default class Train {
         ? this.CurrentSpeed += CstTrain.SpeedingUp : this.MaxSpeed
       // add distance inside the current field
       this.TraveledDistance += this.CurrentSpeed
-      if (this.TraveledDistance >= CstField.Length) {
+      if (this.TraveledDistance >= CstRail.Length) {
         // check if there is a next field in the section
         if (this.OnFieldNr < this.OnSection.CountRails - 1) {
           // move to next field, reset traveled distance
           this.TraveledDistance = 0
           // clear current field
-          this.OnSection.GetRail(this.OnFieldNr).TrainID = 0
+          this.OnSection.GetRail(this.OnFieldNr).SetEmpty()
           // occupy next field
           this.OnFieldNr += 1
-          this.OnSection.GetRail(this.OnFieldNr).TrainID = this.Id
+          this.OnSection.GetRail(this.OnFieldNr).OccupyBeTrain(this.Id)
         } else {
           // no next field
           this.CurrentSpeed = 0

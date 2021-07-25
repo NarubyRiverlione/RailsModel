@@ -9,17 +9,21 @@
       "rails": [
         {
           "TrainID": 0,
-          "Exit": false,
           "Collision": false,
           "X": 200,
           "Y": 100,
           "Direction": 2,
-          "Entrance": true
+          "ByPlace": {
+            "Name": "",
+            "Type": 1
+          }
         },
         {
           "TrainID": 0,
-          "Exit": false,
-          "Entrance": false,
+          "ByPlace": {
+            "Name": "",
+            "Type": 0
+          },
           "Collision": false,
           "X": 210,
           "Y": 100,
@@ -27,8 +31,10 @@
         },
         {
           "TrainID": 0,
-          "Exit": false,
-          "Entrance": false,
+          "ByPlace": {
+            "Name": "ENTRANCE",
+            "Type": 0
+          },
           "Collision": false,
           "X": 220,
           "Y": 90,
@@ -36,8 +42,10 @@
         },
         {
           "TrainID": 0,
-          "Exit": false,
-          "Entrance": false,
+          "ByPlace": {
+            "Name": "",
+            "Type": 0
+          },
           "Collision": false,
           "X": 230,
           "Y": 80,
@@ -45,8 +53,10 @@
         },
         {
           "TrainID": 0,
-          "Exit": false,
-          "Entrance": false,
+          "ByPlace": {
+            "Name": "",
+            "Type": 0
+          },
           "Collision": false,
           "X": 240,
           "Y": 80,
@@ -54,8 +64,10 @@
         },
         {
           "TrainID": 0,
-          "Exit": false,
-          "Entrance": false,
+          "ByPlace": {
+            "Name": "",
+            "Type": 0
+          },
           "Collision": false,
           "X": 250,
           "Y": 80,
@@ -63,8 +75,10 @@
         },
         {
           "TrainID": 0,
-          "Exit": false,
-          "Entrance": false,
+          "ByPlace": {
+            "Name": "",
+            "Type": 0
+          },
           "Collision": false,
           "X": 260,
           "Y": 90,
@@ -72,8 +86,10 @@
         },
         {
           "TrainID": 0,
-          "Exit": false,
-          "Entrance": false,
+          "ByPlace": {
+            "Name": "",
+            "Type": 0
+          },
           "Collision": false,
           "X": 270,
           "Y": 100,
@@ -81,8 +97,10 @@
         },
         {
           "TrainID": 0,
-          "Exit": false,
-          "Entrance": false,
+          "ByPlace": {
+            "Name": "",
+            "Type": 0
+          },
           "Collision": false,
           "X": 270,
           "Y": 110,
@@ -90,8 +108,10 @@
         },
         {
           "TrainID": 0,
-          "Exit": false,
-          "Entrance": false,
+          "ByPlace": {
+            "Name": "",
+            "Type": 0
+          },
           "Collision": false,
           "X": 270,
           "Y": 120,
@@ -99,8 +119,10 @@
         },
         {
           "TrainID": 0,
-          "Exit": false,
-          "Entrance": false,
+          "ByPlace": {
+            "Name": "",
+            "Type": 0
+          },
           "Collision": false,
           "X": 270,
           "Y": 130,
@@ -108,8 +130,10 @@
         },
         {
           "TrainID": 0,
-          "Exit": false,
-          "Entrance": false,
+          "ByPlace": {
+            "Name": "",
+            "Type": 0
+          },
           "Collision": false,
           "X": 260,
           "Y": 140,
@@ -117,8 +141,10 @@
         },
         {
           "TrainID": 0,
-          "Exit": false,
-          "Entrance": false,
+          "ByPlace": {
+            "Name": "",
+            "Type": 0
+          },
           "Collision": false,
           "X": 250,
           "Y": 150,
@@ -126,8 +152,10 @@
         },
         {
           "TrainID": 0,
-          "Exit": false,
-          "Entrance": false,
+          "ByPlace": {
+            "Name": "",
+            "Type": 0
+          },
           "Collision": false,
           "X": 240,
           "Y": 150,
@@ -135,8 +163,10 @@
         },
         {
           "TrainID": 0,
-          "Exit": false,
-          "Entrance": false,
+          "ByPlace": {
+            "Name": "",
+            "Type": 0
+          },
           "Collision": false,
           "X": 230,
           "Y": 150,
@@ -144,8 +174,10 @@
         },
         {
           "TrainID": 0,
-          "Exit": false,
-          "Entrance": false,
+          "ByPlace": {
+            "Name": "",
+            "Type": 0
+          },
           "Collision": false,
           "X": 220,
           "Y": 140,
@@ -153,8 +185,10 @@
         },
         {
           "TrainID": 0,
-          "Exit": false,
-          "Entrance": false,
+          "ByPlace": {
+            "Name": "",
+            "Type": 0
+          },
           "Collision": false,
           "X": 210,
           "Y": 130,
@@ -162,8 +196,10 @@
         },
         {
           "TrainID": 0,
-          "Exit": true,
-          "Entrance": false,
+          "ByPlace": {
+            "Name": "EXIT",
+            "Type": 2
+          },
           "Collision": false,
           "X": 200,
           "Y": 130,

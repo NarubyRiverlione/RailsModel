@@ -13,6 +13,7 @@ export const CstTrain = {
   Braking: 15,
 }
 
-export const CstField = {
+export const CstRail = {
   Length: 500,
+  Empty: -1,
 }

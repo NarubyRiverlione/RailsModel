@@ -1,4 +1,5 @@
 import Direction from '../Model/Direction'
+import { PlaceType } from '../Model/Places'
 import Tracks from '../Model/Tracks'
 import Train from '../Model/Train'
 import RailsMock from './mocks/RailsMock'
@@ -40,10 +41,10 @@ describe('Read & Save', () => {
     const firstSection = testTrack.sections[0]
 
     expect(firstSection.CountRails).toBe(18)
-    expect(firstSection.GetRail(0).Entrance).toBeTruthy()
+    expect(firstSection.GetRail(0).ByPlace.Type).toBe(PlaceType.Entrance)
     expect(firstSection.GetRail(0).Direction).toBe(Direction.Horizontal)
     expect(firstSection.GetRail(10).Direction).toBe(11)
-    expect(firstSection.GetRail(17).Exit).toBeTruthy()
+    expect(firstSection.GetRail(17).ByPlace.Type).toBe(PlaceType.Exit)
   })
 
   it('Save track & read it again to verify', async () => {

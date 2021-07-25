@@ -2,6 +2,7 @@ import Direction, { DirectionByPosition } from '../Model/Direction'
 import Sections, { SectionStatus } from '../Model/Sections'
 import RailsMock from './mocks/RailsMock'
 import { CstError } from '../Cst'
+import Places, { PlaceType } from '../Model/Places'
 
 const { SectionError } = CstError
 
@@ -28,7 +29,7 @@ describe('Add rails', () => {
     it('Add rail to section with entrance', () => {
       const emptySection = new Sections(123)
       const newRail = new RailsMock(0, 0)
-      newRail.Entrance = true
+      newRail.ByPlace = new Places('test entrance', PlaceType.Entrance)
       emptySection.AddRail(newRail)
       expect(emptySection.CountRails).toBe(1)
       expect(emptySection.GetRail(0)).toMatchObject(newRail)
@@ -52,7 +53,7 @@ describe('Add rails', () => {
       const newRail = new RailsMock(9, 9)
       beforeEach(() => {
         section = new Sections(1)
-        entrance.Entrance = true
+        entrance.ByPlace = new Places('test entrance', PlaceType.Entrance)
         section.AddRail(entrance)
         expect(section.CountRails).toBe(1)
       })
@@ -91,7 +92,7 @@ describe('Add rails', () => {
       const newRail = new RailsMock(10, 9)
       beforeEach(() => {
         section = new Sections(1)
-        entrance.Entrance = true
+        entrance.ByPlace = new Places('test entrance', PlaceType.Entrance)
         section.AddRail(entrance)
         expect(section.CountRails).toBe(1)
       })
@@ -130,7 +131,7 @@ describe('Add rails', () => {
       const newRail = new RailsMock(11, 9)
       beforeEach(() => {
         section = new Sections(1)
-        entrance.Entrance = true
+        entrance.ByPlace = new Places('test entrance', PlaceType.Entrance)
         section.AddRail(entrance)
         expect(section.CountRails).toBe(1)
       })
@@ -171,7 +172,7 @@ describe('Add rails', () => {
       const newRail = new RailsMock(9, 10)
       beforeEach(() => {
         section = new Sections(1)
-        entrance.Entrance = true
+        entrance.ByPlace = new Places('test entrance', PlaceType.Entrance)
         section.AddRail(entrance)
         expect(section.CountRails).toBe(1)
       })
@@ -214,7 +215,7 @@ describe('Add rails', () => {
       const newRail = new RailsMock(11, 10)
       beforeEach(() => {
         section = new Sections(1)
-        entrance.Entrance = true
+        entrance.ByPlace = new Places('test entrance', PlaceType.Entrance)
         section.AddRail(entrance)
         expect(section.CountRails).toBe(1)
       })
@@ -259,7 +260,7 @@ describe('Add rails', () => {
       const newRail = new RailsMock(9, 11)
       beforeEach(() => {
         section = new Sections(1)
-        entrance.Entrance = true
+        entrance.ByPlace = new Places('test entrance', PlaceType.Entrance)
         section.AddRail(entrance)
         expect(section.CountRails).toBe(1)
       })
@@ -302,7 +303,7 @@ describe('Add rails', () => {
       const newRail = new RailsMock(10, 11)
       beforeEach(() => {
         section = new Sections(1)
-        entrance.Entrance = true
+        entrance.ByPlace = new Places('test entrance', PlaceType.Entrance)
         section.AddRail(entrance)
         expect(section.CountRails).toBe(1)
       })
@@ -341,7 +342,7 @@ describe('Add rails', () => {
       const newRail = new RailsMock(11, 11)
       beforeEach(() => {
         section = new Sections(1)
-        entrance.Entrance = true
+        entrance.ByPlace = new Places('test entrance', PlaceType.Entrance)
         section.AddRail(entrance)
         expect(section.CountRails).toBe(1)
       })

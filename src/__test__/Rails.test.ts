@@ -1,5 +1,15 @@
 import Rails from '../Model/Rails'
 import Direction, { Position } from '../Model/Direction'
+import { PlaceType } from '../Model/Places'
+
+describe('New rail', () => {
+  it('New rail is empty, no place beside', () => {
+    const newRail = new Rails(1, 2)
+    expect(newRail.ByPlace.Type).toBe(PlaceType.None)
+    expect(newRail.IsEmpty).toBeTruthy()
+    expect(newRail.Collision).toBeFalsy()
+  })
+})
 
 describe('Location', () => {
   it('X - Y', () => {
@@ -62,21 +72,16 @@ describe('Position', () => {
 })
 
 describe('Occupied - collision', () => {
-  it('Default = not occupied, no collision', () => {
-    const empty = new Rails(1, 2, 1)
-    expect(empty.TrainID).toBe(0)
-    expect(empty.Collision).toBeFalsy()
-  })
   it('Set occupied =  has train ID', () => {
     const occupy = new Rails(1, 2, 1)
     occupy.OccupyBeTrain(5)
-    expect(occupy.TrainID).toBe(5)
+    expect(occupy.GetTrain).toBe(5)
     expect(occupy.Collision).toBeFalsy()
   })
   it('Cannot occupy field without rail', () => {
     const occupy = new Rails(1, 2, 0)
     occupy.OccupyBeTrain(5)
-    expect(occupy.TrainID).toBe(0)
+    expect(occupy.IsEmpty).toBeTruthy()
     expect(occupy.Collision).toBeFalsy()
   })
   it('Set train id to occupied field = collision', () => {
@@ -91,26 +96,6 @@ describe('Occupied - collision', () => {
     occupy.OccupyBeTrain(10)
     occupy.ClearCollision()
     expect(occupy.Collision).toBeFalsy()
-    expect(occupy.TrainID).toBe(0)
-  })
-})
-
-describe('entrance / exit', () => {
-  it('Default no entrance nor exit', () => {
-    const rail = new Rails(1, 2, 1)
-    expect(rail.Entrance).toBeFalsy()
-    expect(rail.Exit).toBeFalsy()
-  })
-  it('entrance', () => {
-    const rail = new Rails(1, 2, 1)
-    rail.Entrance = true
-    expect(rail.Entrance).toBeTruthy()
-    expect(rail.Exit).toBeFalsy()
-  })
-  it('exit', () => {
-    const rail = new Rails(1, 2, 1)
-    rail.Exit = true
-    expect(rail.Entrance).toBeFalsy()
-    expect(rail.Exit).toBeTruthy()
+    expect(occupy.IsEmpty).toBeTruthy()
   })
 })
