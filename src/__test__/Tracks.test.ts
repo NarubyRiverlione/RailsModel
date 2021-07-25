@@ -25,6 +25,8 @@ describe('Make track with sections', () => {
     saveTrack.Sections.push(section2)
 
     expect(saveTrack.SectionAmount).toBe(2)
+    expect(saveTrack.Sections[0].RailAmount).toBe(3)
+    expect(saveTrack.Sections[1].RailAmount).toBe(4)
   })
 })
 

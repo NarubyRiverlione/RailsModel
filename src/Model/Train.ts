@@ -41,10 +41,7 @@ export default class Train {
 
   Thick() {
     if (!this.OnSection) return
-    // no next field = stop train
-    if (this.OnFieldNr === this.OnSection.Rails.length - 1) {
-      this.CurrentSpeed = 0
-    }
+
     // braking = slowing down until stop
     if (this.Braking) {
       this.Running = false
@@ -60,7 +57,7 @@ export default class Train {
       this.TraveledDistance += this.CurrentSpeed
       if (this.TraveledDistance >= CstField.Length) {
         // check if there is a next field in the section
-        if (this.OnFieldNr < this.OnSection.Rails.length) {
+        if (this.OnFieldNr < this.OnSection.Rails.length - 1) {
           // move to next field, reset traveled distance
           this.TraveledDistance = 0
           // clear current field
@@ -68,6 +65,10 @@ export default class Train {
           // occupy next field
           this.OnFieldNr += 1
           this.OnSection.Rails[this.OnFieldNr].TrainID = this.Id
+        } else {
+          // no next field
+          this.CurrentSpeed = 0
+          this.Running = false
         }
       }
     }

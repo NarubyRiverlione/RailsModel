@@ -105,15 +105,19 @@ describe('Train movements', () => {
   it('No next field in section = stay at current', () => {
     const name = 'Test Train'
     const id = 1
-    const maxSpeed = 120
-    const currentSpeed = 60
+    const maxSpeed = 250
+    const currentSpeed = 250
     const lastField = FieldsInTestSection - 1 // count start at zero
     const train = new Train(name, id, maxSpeed, currentSpeed)
     expect(testSection.Rails.length).toBe(FieldsInTestSection)
     train.SetOnSection(testSection, lastField)
+    train.Running = true
     expect(testSection.Rails[lastField].TrainID).toBe(id)
     expect(train.OnFieldNr).toBe(lastField)
+    // speed 250, length rail = 500 --> need 2 thick to try to move to next  rail
     train.Thick()
+    train.Thick()
+    expect(train.OnFieldNr).toBe(lastField)
     expect(testSection.Rails[lastField].TrainID).toBe(id)
     expect(train.CurrentSpeed).toBe(0)
   })
