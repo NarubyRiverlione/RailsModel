@@ -5,9 +5,13 @@ import Train from './Train'
 
 export interface Track {
   Name: string
-  readonly sections: Section[]
   Trains: Train[]
+  readonly sections: Section[]
   AddSection: (addedSection: Section) => void
+  ParseJson: (trackTxt: string) => void
+  Read: (Filename: string) => void
+  Save: (FileName: string) => void
+  Thick: () => void
 }
 
 export default class Tracks implements Track {
